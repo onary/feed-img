@@ -12,7 +12,7 @@ https://docs.djangoproject.com/en/1.6/ref/settings/
 import os
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
-
+OPENSHIFT = os.environ.has_key('OPENSHIFT_APP_NAME')
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.6/howto/deployment/checklist/
 
@@ -36,6 +36,8 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    "apps.worker",
 )
 
 MIDDLEWARE_CLASSES = (
@@ -55,12 +57,28 @@ WSGI_APPLICATION = 'funny_img.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.6/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+if OPENSHIFT:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.mysql',
+            'NAME': os.environ['OPENSHIFT_APP_NAME'],
+            'USER': os.environ['OPENSHIFT_MYSQL_DB_USERNAME'],
+            'PASSWORD': os.environ['OPENSHIFT_MYSQL_DB_PASSWORD'],
+            'HOST': os.environ['OPENSHIFT_MYSQL_DB_HOST'],
+            'PORT': os.environ['OPENSHIFT_MYSQL_DB_PORT'],
+        }
     }
-}
+else:
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.mysql",
+            "NAME": "imgdb",
+            "USER": "img",
+            "PASSWORD": "img",
+            "HOST": "",
+            "PORT": "",
+        }
+    }
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.6/topics/i18n/
@@ -76,7 +94,27 @@ USE_L10N = True
 USE_TZ = True
 
 
+# Absolute filesystem path to the directory that will hold user-uploaded files.
+# Example: "/var/www/example.com/media/"
+if OPENSHIFT:
+    MEDIA_ROOT = os.path.join(os.environ.get('OPENSHIFT_REPO_DIR'), 'wsgi', 'media')
+    STATIC_ROOT = os.path.join(os.environ.get('OPENSHIFT_REPO_DIR'), 'wsgi', 'static')
+else:
+    MEDIA_ROOT = ''
+    STATIC_ROOT = ''
+
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.6/howto/static-files/
+# Additional locations of static files
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, "../static"),
+)
+
+TEMPLATE_DIRS = (
+    # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
+    # Always use forward slashes, even on Windows.
+    # Don't forget to use absolute paths, not relative paths.
+    os.path.join(os.path.dirname(__file__), 'templates').replace('\\','/'),
+)
 
 STATIC_URL = '/static/'

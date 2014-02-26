@@ -1,0 +1,17 @@
+* {
+    padding: 0;
+    margin: 0;
+}
+
+body {
+    font: normal 0.8em sans-serif, helvetica, arial;
+    width: 90%;
+    margin-left: 5%;
+    margin-right: 5%;
+    float: left;
+}
+
+header {
+    color: green;
+    background-color: gray;
+}
