@@ -1,0 +1,15 @@
+{% load pin_tags %}
+
+{% spaceless %}
+{% for item in images %}
+<li>
+	<a href="{{ item.originalContextUrl }}">
+		<img src="{{ item.url }}" 
+			width="200" 
+			height="{{ item.width|get_height:item.height }}"
+			alt="{{ item.titleNoFormatting }}"/>
+		<p>{{ item.title|safe }}</p>
+	</a>
+</li>
+{%endfor%}
+{% endspaceless %}
