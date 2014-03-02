@@ -5,5 +5,6 @@ admin.autodiscover()
 
 urlpatterns = patterns('',
     url(r'^$','apps.worker.views.index'),
+    url(r'^cache$','apps.worker.views.cache_v'),
     url(r'^admin/', include(admin.site.urls)),
 )

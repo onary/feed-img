@@ -80,7 +80,11 @@ else:
             "PORT": "",
         }
     }
-
+# Redis settings for cache, sessions and templates bytecode
+REDIS_HOST = '127.0.0.1'
+REDIS_PORT = 6379
+REDIS_DB = 1
+REDIS_PASSWORD = ''
 # Internationalization
 # https://docs.djangoproject.com/en/1.6/topics/i18n/
 
@@ -103,6 +107,27 @@ STATIC_ROOT = ''
 if OPENSHIFT:
     MEDIA_ROOT = os.path.join(os.environ.get('OPENSHIFT_REPO_DIR'), 'wsgi', 'media')
     STATIC_ROOT = os.path.join(os.environ.get('OPENSHIFT_REPO_DIR'), 'wsgi', 'static')
+
+    # Redis settings
+    REDIS_HOST = os.environ.get('OPENSHIFT_REDIS_HOST')
+    REDIS_PORT = os.environ.get('OPENSHIFT_REDIS_PORT')
+    REDIS_PASSWORD = os.environ.get('REDIS_PASSWORD')
+
+
+# Cache settings
+
+CACHES = {
+    "default": {
+        "BACKEND": "redis_cache.cache.RedisCache",
+        "LOCATION": '%s:%d:%d' % (REDIS_HOST, REDIS_PORT, REDIS_DB),
+        'TIMEOUT': 60,
+        "OPTIONS": {
+            "CLIENT_CLASS": "redis_cache.client.DefaultClient",
+            'SOCKET_TIMEOUT': 5,
+            'PASSWORD': REDIS_PASSWORD,
+        }
+    }
+}
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.6/howto/static-files/

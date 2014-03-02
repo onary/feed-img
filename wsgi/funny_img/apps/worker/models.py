@@ -54,7 +54,6 @@ class Images(object):
         start = '&start=%s' % (self.start if self.start else \
             (self.page * self.cycles + cycle - 1) * self.rsz)
 
-        print self.basicUrl + query + domen + rsz + start
         return self.basicUrl + query + domen + rsz + start
 
     def normalize_query(self, query):

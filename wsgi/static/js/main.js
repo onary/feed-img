@@ -35,6 +35,7 @@
             // Create a new layout handler when images have loaded.
             handler = $('#tiles li');
             handler.wookmark(options);
+            isLoading = false;
         });
     };
 
@@ -66,7 +67,7 @@
 
         // Apply layout.
         applyLayout();
-        isLoading = false;
+        // isLoading = false;
     };
 
     // Capture scroll event.
@@ -75,7 +76,7 @@
     $("#ScrollToTop").click(function(){
         $('html, body').animate({scrollTop: $("html").offset().top}, 1000);
     });
-    // applyLayout();
     // Load first data from the API.
-    loadData();
+    applyLayout();
+    // loadData();
 })(jQuery);
