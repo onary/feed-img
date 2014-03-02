@@ -1,9 +1,41 @@
 (function ($) {
+    var getParam = function(key) {
+        // Find the key and everything up to the ampersand delimiter
+        var value=RegExp(""+key+"[^&]+").exec(window.location.search);
+        // Return the unescaped value minus everything starting from the equals sign or an empty string
+        return unescape(!!value ? value.toString().replace(/^[^=]+./,"") : "");
+    };
+
     var handler = null,
-            page = 1,
-            isLoading = false,
-            apiURL = '/';
-            // apiURL = 'http://www.wookmark.com/api/json/popular';
+        page = 1,
+        queryString = getParam('q'),
+        isLoading = queryString ? true : false,
+        apiURL = '/';
+
+    if (!!queryString) {
+        $('#search-form').hide();
+        $('.homelink').show();
+    };
+
+    $(".front-end-search" ).click(function(event) {
+        event.preventDefault();
+        var query = $('#search-form input').val();
+
+        if (query) {
+            $('#search-form').hide();
+            $('.homelink').show();
+            $('#tiles li').each(function(index) {
+                
+                if ($(this).find($('p')).text().toLowerCase().search(query.toLowerCase()) == -1) {
+                    $(this).remove();
+                }
+                
+            });
+            queryString = true;
+            applyLayout();
+            $('html, body').animate({scrollTop: $("html").offset().top}, 100);
+        }
+    });
 
     // Prepare layout options.
     var options = {
@@ -35,7 +67,8 @@
             // Create a new layout handler when images have loaded.
             handler = $('#tiles li');
             handler.wookmark(options);
-            isLoading = false;
+            isLoading = queryString ? true : false;
+            $('#loaderCircle').hide();
         });
     };
 
@@ -58,16 +91,11 @@
      * Receives data from the API, creates HTML for images and updates the layout
      */
     function onLoadData(data) {
-        $('#loaderCircle').hide();
-
         // Increment page index for future calls.
         page++;
-
         $('#tiles').append(data);
-
         // Apply layout.
         applyLayout();
-        // isLoading = false;
     };
 
     // Capture scroll event.
@@ -78,5 +106,5 @@
     });
     // Load first data from the API.
     applyLayout();
-    // loadData();
+
 })(jQuery);

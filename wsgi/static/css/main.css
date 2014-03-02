@@ -6,7 +6,7 @@ html {
 }
 
 body {
-    background-color:    #e5e5e5;
+    background-color: #e5e5e5;
 }
 
 #main {
@@ -185,4 +185,16 @@ background: #FAF7F7;
     padding: 20px 10px 30px;
     -moz-transition: bottom 250ms ease-in-out;
     -webkit-transition: bottom 250ms ease-in-out;
+}
+
+.nav-tabs > li > a.homelink {
+    float: left;
+    display: none;
+    color: white;
+    line-height: 14px;
+    width: 120px;
+    height: 15px;
+    -webkit-border-radius: 4px 4px 4px 4px;
+    -moz-border-radius: 4px 4px 4px 4px;
+    border-radius: 4px 4px 4px 4px;
 }
