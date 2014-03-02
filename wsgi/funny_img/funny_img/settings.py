@@ -82,7 +82,7 @@ else:
     }
 # Redis settings for cache, sessions and templates bytecode
 REDIS_HOST = '127.0.0.1'
-REDIS_PORT = 6379
+REDIS_PORT = '6379'
 REDIS_DB = 1
 REDIS_PASSWORD = ''
 # Internationalization
@@ -119,7 +119,7 @@ if OPENSHIFT:
 CACHES = {
     "default": {
         "BACKEND": "redis_cache.cache.RedisCache",
-        "LOCATION": '%s:%d:%d' % (REDIS_HOST, REDIS_PORT, REDIS_DB),
+        "LOCATION": '%s:%s:%d' % (REDIS_HOST, REDIS_PORT, REDIS_DB),
         'TIMEOUT': 60,
         "OPTIONS": {
             "CLIENT_CLASS": "redis_cache.client.DefaultClient",

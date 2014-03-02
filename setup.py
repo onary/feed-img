@@ -8,5 +8,5 @@ setup(name='img',
     url='http://www.python.org/sigs/distutils-sig/',
     install_requires=['Django>=1.5',
                       'MySQL-python',
-                      ' django-redis'],
+                      'django-redis'],
      )
