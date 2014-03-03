@@ -3,6 +3,7 @@ from django.core.cache import get_cache
 from django.conf import settings
 import ast
 
+
 try:
     import simplejson
 except ImportError:
@@ -70,8 +71,10 @@ class Images(object):
     def cache_result(self, results, request):
         token = request.session.get('token')
         for res in results:
-            key = '%s:%s' % (token, self.normalize_query(res['title']))
+            key = '%s:%s:%s' % (token, 
+                self.normalize_query(res['title']), res['imageId'][:15])
             self.cache.set(key, str(res), timeout=60*10)
+        return None
 
     def search(self, request):
         query = self.normalize_query(request.GET.get('q', ''))
