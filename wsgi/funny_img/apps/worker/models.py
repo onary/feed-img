@@ -10,14 +10,14 @@ except ImportError:
     import json as simplejson
 
 
-class Images(object):
-    def __init__(self, 
-                page=0, 
-                query="Funny images", 
-                start=0, 
-                rsz=8, 
-                basicUrl='https://ajax.googleapis.com/ajax/services/search/images?v=1.0&q=',
-                cycles=2):
+class GoogleImages(object):
+    """
+    Represents a google image search result
+    """
+
+    def __init__(self, page=0, query="Funny images", start=0, rsz=8, 
+                 basicUrl='https://ajax.googleapis.com/ajax/services/search/images?v=1.0&q=',
+                 cycles=2, cache=False):
 
         self.page = page
         self.query = query
@@ -25,7 +25,8 @@ class Images(object):
         self.rsz = rsz
         self.basicUrl = basicUrl
         self.cycles = cycles
-        self.cache = get_cache('redis_cache.cache.RedisCache', **settings.CACHES['default'])
+        self.cache = cache or get_cache('redis_cache.cache.RedisCache', **settings.CACHES['default'])
+
 
     def get(self, request=None, domen=['tumblr.com', 'instagram.com'], ref='/'):
         results = []
@@ -44,7 +45,7 @@ class Images(object):
                 try:
                     results += list(simplejson.load(
                         urllib2.urlopen(urllib2.Request(
-                            self.url(cycle, site), None, {'Referer': ref})
+                            self.url(cycle), None, {'Referer': ref})
                             )
                         )['responseData']['results'])
                 except Exception, e:
@@ -55,6 +56,7 @@ class Images(object):
 
         return results
 
+
     def url(self, cycle=1, site=None):
         query = self.normalize_query(self.query)
         domen = ('&as_sitesearch=%s' % site) if site else ""
@@ -64,17 +66,19 @@ class Images(object):
 
         return self.basicUrl + query + domen + rsz + start
 
+
     def normalize_query(self, query):
         return query.strip().replace(":", "%3A").replace("+", "%2B")\
                 .replace("&", "%26").replace(" ", "+").lower()
 
-    def cache_result(self, results, request):
+
+    def cache_result(self, results, request, timeout=60*10):
         token = request.session.get('token')
         for res in results:
             key = '%s:%s:%s' % (token, 
                 self.normalize_query(res['title']), res['imageId'][:15])
-            self.cache.set(key, str(res), timeout=60*10)
-        return None
+            self.cache.set(key, str(res), timeout=timeout)
+
 
     def search(self, request):
         query = self.normalize_query(request.GET.get('q', ''))
@@ -85,7 +89,7 @@ class Images(object):
 
             keys_list = []
             for key in keys:
-                if key[11:].find(query) != -1:
+                if key[11:-16].find(query) != -1:
                     keys_list.append(key)
 
             for key in keys_list:

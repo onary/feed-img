@@ -55,8 +55,6 @@ WSGI_APPLICATION = 'funny_img.wsgi.application'
 
 
 # Database
-# https://docs.djangoproject.com/en/1.6/ref/settings/#databases
-
 if OPENSHIFT:
     DATABASES = {
         'default': {
@@ -99,7 +97,6 @@ USE_TZ = True
 
 
 # Absolute filesystem path to the directory that will hold user-uploaded files.
-# Example: "/var/www/example.com/media/"
 MEDIA_ROOT = ''
 STATIC_ROOT = ''
 
@@ -129,16 +126,12 @@ CACHES = {
 }
 
 # Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/1.6/howto/static-files/
 # Additional locations of static files
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, "../static"),
 )
 
 TEMPLATE_DIRS = (
-    # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
-    # Always use forward slashes, even on Windows.
-    # Don't forget to use absolute paths, not relative paths.
     os.path.join(os.path.dirname(__file__), 'templates').replace('\\','/'),
 )
 

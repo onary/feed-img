@@ -1,3 +1,78 @@
 from django.test import TestCase
+from django.test.client import Client
+from django.core.urlresolvers import reverse
 
-# Create your tests here.
+from apps.worker.models import GoogleImages
+
+class Object(object):
+    pass
+
+class GoogleImagesTest(TestCase):
+    """
+    Testing GoogleImages model's methods
+    """
+
+    def setUp(self):
+        self.request = Object()
+        setattr(self.request, 'session', {'token': 'F48ZQ6PAH4'})
+        setattr(self.request, 'GET', {'q': 'insta'})
+        self.gi_instance = GoogleImages()
+        self.items = [{'title': 'instagram images', 
+                       'imageId': '123456789ABCDFG', 
+                       'url': 'http://testblog.com/test1.jpg'}, 
+                       {'title': 'tumbler images', 
+                       'imageId': '561234789ABCDFG', 
+                       'url': 'http://testblog.com/test2.jpg'}]
+
+    def test_normalize_query(self):
+        self.assertEqual(
+            self.gi_instance.normalize_query("funny images+tumbler&insta:"), 
+            'funny+images%2btumbler%26insta%3a'
+            )
+
+    def test_cache_and_search(self):
+        """
+        Testing cache_result() and search() methods
+        """
+        self.gi_instance.cache_result(self.items, self.request, 60*3)
+        self.assertEqual(self.gi_instance.search(self.request), 
+            [{'title': 'instagram images', 
+             'imageId': '123456789ABCDFG', 
+             'url': 'http://testblog.com/test1.jpg'}]
+            )
+
+    def test_url(self):
+        self.assertEqual(self.gi_instance.url(2, 'tumblr.com'),
+            "https://ajax.googleapis.com/ajax/services/search/images\
+?v=1.0&q=funny+images&as_sitesearch=tumblr.com&rsz=8&start=8"
+        )
+
+    def test_get(self):
+        """
+        Tests get method
+        """
+        items16 = self.gi_instance.get(request=None, domen=None)
+        self.assertEqual(len(items16), 16)
+
+        items32 = self.gi_instance.get(request=None, domen=['google.com', 'pinterest.com'])
+        self.assertEqual(len(items32), 32)
+
+
+class ViewsTest(TestCase):
+    def setUp(self):
+        self.client = Client()
+
+    def test_request_pure(self):
+        response = self.client.get(reverse('index'))
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response['Content-Type'], 'text/html; charset=utf-8')
+
+    def test_request_page(self):
+        response = self.client.get(reverse('index') + '?page=1')
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response['Content-Type'], 'text/html; charset=utf-8')
+
+    def test_request_q(self):
+        response = self.client.get(reverse('index') + '?q=insta')
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response['Content-Type'], 'text/html; charset=utf-8')
