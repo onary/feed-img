@@ -63,16 +63,19 @@ class ViewsTest(TestCase):
         self.client = Client()
 
     def test_request_pure(self):
+        "Testing index view with pure request"
         response = self.client.get(reverse('index'))
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response['Content-Type'], 'text/html; charset=utf-8')
 
     def test_request_page(self):
+        "Testing index view with ?page in request"
         response = self.client.get(reverse('index') + '?page=1')
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response['Content-Type'], 'text/html; charset=utf-8')
 
     def test_request_q(self):
+        "Testing index view with ?q in request"
         response = self.client.get(reverse('index') + '?q=insta')
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response['Content-Type'], 'text/html; charset=utf-8')
