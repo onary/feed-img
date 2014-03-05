@@ -49,7 +49,7 @@ def google(request):
 def instagram(request):
     page = int(request.GET.get('page', 0))
     max_id = request.session.get('page%s' % page, None)
-    items, next_url = inst_client.tag_recent_media(20, max_id, 'funny')
+    items, next_url = inst_client.tag_recent_media(30, max_id, 'funny')
     request.session['page%s' % (page +1)] = parse_qs(next_url)['max_tag_id'][0]
 
     if page:
@@ -65,9 +65,7 @@ def tumblr(request):
     
     # Using timestamp object for pagination
     items = tumblr_client.tagged("funny", limit=20, 
-        before=(request.session.get('time', 
-                time.mktime(datetime.now().timetuple())) - page * 60 * 10
-            )
+        before=(request.session.get('time', 1394041341) - page * 60 * 10)
         )
 
     if page:

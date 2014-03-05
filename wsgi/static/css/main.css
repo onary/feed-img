@@ -73,6 +73,7 @@ header p {
     text-align: center;
     font-weight: 200;
     max-width: 200px;
+    min-height: 45px;
     overflow: hidden;
     margin: 7px 0 2px 7px;
 }
