@@ -136,3 +136,5 @@ TEMPLATE_DIRS = (
 )
 
 STATIC_URL = '/static/'
+
+INSTAGRAM_ID = '0e5e6d62e1f94f72a40180c9cd5bdbe0'

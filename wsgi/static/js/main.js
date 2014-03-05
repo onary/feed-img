@@ -10,7 +10,7 @@
         page = 1,
         queryString = getParam('q'),
         isLoading = queryString ? true : false,
-        apiURL = '/';
+        apiURL = '';
 
     if (!!queryString) {
         $('#search-form').hide();

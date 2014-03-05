@@ -1,0 +1,9 @@
+{% extends "base.html"%}
+
+{% block container %}
+<div class="index center">
+	<a class="btn btn-success btn-large" href="{% url 'google' %}">Google <i class="icon-search"></i></a>
+	<a class="btn btn-warning btn-large" href="{% url 'instagram' %}">Instagram <i class="icon-camera"></i></a>
+	<a class="btn btn-info btn-large" href="">Tumbler <i class="icon-picture"></i></a>
+</div>
+{% endblock container %}

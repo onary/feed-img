@@ -1,0 +1,17 @@
+{% extends "base.html"%}
+
+{% block header %}
+<li>
+	<form class="navbar-search pull-left" action="{% url 'instagram' %}" method="get" id="search-form">
+        <input type="text" name="q" class="search-query" placeholder="search">
+        <button class="btn btn-warning front-end-search">Front-end search <i class="icon-thumbs-up"></i></button>
+    </form>
+    <a class="btn-success homelink" href="{% url 'instagram' %}"><i class="icon-arrow-left"></i> Back</a>
+</li>
+{% endblock header %}
+
+{% block content %}
+<ul id="tiles">
+    {% include "instagram_items.html" %}
+</ul>
+{% endblock content %}

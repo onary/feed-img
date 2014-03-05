@@ -18,25 +18,22 @@
 
 <body>
     <div id="container">
+        {% block container %}
         <header>
             <div class="navbar-fixed-top">
             <ul class="nav nav-tabs nav-second">
-                <li>
-                    <form class="navbar-search pull-left" action="/" method="get" id="search-form">
-                        <input type="text" name="q" class="search-query" placeholder="search">
-                        <button type="submit" class="btn btn-info">Back-end search <i class="icon-thumbs-down"></i></button>
-                        <button class="btn btn-warning front-end-search">Front-end search <i class="icon-thumbs-up"></i></button>
-                    </form>
-                    <a class="btn-success homelink" href="/"><i class="icon-home"></i> Home</a>
+                {% block header %}
+                {% endblock header %}
+                <li class="right">
+                    <a class="btn" href="{% url 'index' %}"><i class="icon-home"></i> Home</a>
                 </li>
             </ul>
             </div>
         </header>
         <div id="main" role="main">
-            <ul id="tiles">
-                {% include "items.html" %}
-            </ul>
+            {% block content %}
 
+            {% endblock content %}
             <div id="loader" style="text-align: center;">
                 <div id="loaderCircle">
                     <img src="{{STATIC_URL}}img/loader.gif" />
@@ -50,6 +47,7 @@
                 <i class="icon-arrow-up"></i>
             </button>
         </footer>
+        {% endblock container %}
     </div>
 
     <!-- include jQuery -->
