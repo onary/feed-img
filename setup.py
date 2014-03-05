@@ -9,5 +9,6 @@ setup(name='img',
     install_requires=['Django>=1.5',
                       'MySQL-python',
                       'django-redis',
-                      'python-instagram'],
+                      'python-instagram',
+                      'pytumblr'],
      )

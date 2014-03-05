@@ -22,6 +22,17 @@ class GoogleImages(object):
     2) Caches data on key 'title' (optional)
 
     3) Able to search recent result in cache by query
+
+    Gets several variables
+    : page: (int) support pagination
+    : query: (string) query for search
+    : start: (int) This argument supplies the start index of the first search result. 
+        Each successful response contains a cursor object which includes an array of pages. 
+        The start property for a page may be used as a valid value for this argument. 
+    : rsz: (int) This argument supplies an integer from 1-8 indicating the number of results to return per page.
+    : basicUrl: (string) search engine URL
+    : cycles: (int) increase amount of results per page [amount for 1 page == cycles * rsz]
+    : cache: (bool) if true - allow to cache results for following search by key in latest results
     """
 
     def __init__(self, page=0, query="Funny images", start=0, rsz=8, 
@@ -42,6 +53,11 @@ class GoogleImages(object):
         """
         Makes a request to the Google API
         and call cache method (optional)
+
+        Gets several variables
+        : request: current request
+        : domen: list with domens
+        : ref: string with referer
 
         example of result:
         [{"GsearchResultClass":"GimageSearch",

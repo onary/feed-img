@@ -1,0 +1,17 @@
+{% load pin_tags %}
+
+{% spaceless %}
+{% for item in items %}
+	{% for photo in item.photos %}
+		<li>
+			<a href="{{ item.post_url }}">
+				<img src="{{ photo.original_size.url }}" 
+				width="200" 
+				height="{{ photo.original_size.width|get_height:photo.original_size.height }}"
+				alt=""/>
+			<p class="caption">{% if item.caption %}{{ item.caption|safe }}{% endif %}</p>
+			</a>
+		</li>
+	{% endfor %}
+{% endfor %}
+{% endspaceless %}

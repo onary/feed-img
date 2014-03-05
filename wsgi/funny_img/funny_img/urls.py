@@ -7,5 +7,6 @@ urlpatterns = patterns('',
 	url(r'^$','apps.worker.views.index', name='index'),
     url(r'^google/$','apps.worker.views.google', name='google'),
     url(r'^instagram/$','apps.worker.views.instagram', name='instagram'),
+    url(r'^tumblr/$','apps.worker.views.tumblr', name='tumblr'),
     url(r'^admin/', include(admin.site.urls)),
 )

@@ -72,6 +72,8 @@ header p {
     line-height: 20px;
     text-align: center;
     font-weight: 200;
+    max-width: 200px;
+    overflow: hidden;
     margin: 7px 0 2px 7px;
 }
 
