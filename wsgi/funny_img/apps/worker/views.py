@@ -70,7 +70,6 @@ def tumblr(request):
             )
         )
 
-
     if page:
         return render(request, 'tumblr_items.html', {'items': items})
 

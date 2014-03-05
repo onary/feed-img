@@ -206,14 +206,14 @@ li.right {
 }
 
 li.right a {
-    color: grey;
+    color: #ccc;
 }
 
 div.center {
     position: relative;
     display: block;
     width: 400px;
-    margin: 100px auto;
+    margin: 22% auto;
 }
 
 div.center a {
