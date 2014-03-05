@@ -58,7 +58,7 @@ class GoogleImagesTest(TestCase):
         self.assertEqual(len(items32), 32)
 
 
-class ViewsTest(TestCase):
+class GoogleViewsTest(TestCase):
     def setUp(self):
         self.client = Client()
 
@@ -77,5 +77,38 @@ class ViewsTest(TestCase):
     def test_request_q(self):
         "Testing google view with ?q in request"
         response = self.client.get(reverse('google') + '?q=insta')
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response['Content-Type'], 'text/html; charset=utf-8')
+
+
+class InstagramViewsTest(TestCase):
+    def setUp(self):
+        self.client = Client()
+
+    def test_request_pure(self):
+        "Testing instagram view with pure request"
+        response = self.client.get(reverse('instagram'))
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response['Content-Type'], 'text/html; charset=utf-8')
+
+    def test_request_page(self):
+        "Testing instagram view with ?page in request"
+        response = self.client.get(reverse('instagram') + '?page=1')
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response['Content-Type'], 'text/html; charset=utf-8')
+
+class TumblrViewsTest(TestCase):
+    def setUp(self):
+        self.client = Client()
+
+    def test_request_pure(self):
+        "Testing tumblr view with pure request"
+        response = self.client.get(reverse('tumblr'))
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response['Content-Type'], 'text/html; charset=utf-8')
+
+    def test_request_page(self):
+        "Testing tumblr view with ?page in request"
+        response = self.client.get(reverse('tumblr') + '?page=1')
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response['Content-Type'], 'text/html; charset=utf-8')
